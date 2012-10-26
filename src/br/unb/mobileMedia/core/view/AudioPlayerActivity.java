@@ -36,7 +36,12 @@ public class AudioPlayerActivity extends Activity {
 		listView.setItemChecked(0, true);
 
 		try {
-			AudioPlayerList player = new AudioPlayerList(getApplicationContext(), executionList);
+			AudioPlayerList player = AudioPlayerList.getInstance(getApplicationContext());
+			if (player.isPlaying()){ 
+				player.stop();
+				player.killPLaylist();
+			}
+			player.newPlaylist(executionList);
 			player.play();
 		} catch (RuntimeException e) {
 			e.printStackTrace();

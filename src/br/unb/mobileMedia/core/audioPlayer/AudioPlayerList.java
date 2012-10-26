@@ -14,18 +14,24 @@ import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.manager.Manager;
 
 public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
+	
+	private static volatile AudioPlayerList uniqueInstance;
+	
 	private Context context;
 	private MediaPlayer player;
 	private List<Audio> audioList;
 	private int current;
 	private boolean repeat = false;
 	private boolean shuffle = false;
+	private boolean isPlaying = false;
+	
+	private AudioPlayerList () {}
 	
 	/**
 	 * Default constructor expecting just the application context.
 	 * @param context the application context.
 	 */
-	public AudioPlayerList(Context context) {
+	private AudioPlayerList(Context context) {
 		this.context = context;
 		player = new MediaPlayer();
 		current = 0;
@@ -41,14 +47,37 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	 * @param context the application context.
 	 * @param audioArray an array of musics that the user might choose to play
 	 */
-	public AudioPlayerList(Context context, Audio[] audioArray) {
+	private AudioPlayerList(Context context, Audio[] audioArray) {
 		this(context);
 		
-		audioList = new ArrayList<Audio>();
+		if (audioArray == null)
+			audioList = new ArrayList<Audio>();
 		
 		for(Audio audio : audioArray)  {
 			audioList.add(audio);
 		}
+	}
+	
+	public static AudioPlayerList getInstance (Context context, Audio[] audioArray) {
+		if (uniqueInstance == null){
+			synchronized (AudioPlayerList.class) {
+				if (uniqueInstance == null) {
+					uniqueInstance = new AudioPlayerList(context, audioArray);
+				}
+			}
+		}
+		return uniqueInstance;
+	}
+	
+	public static AudioPlayerList getInstance (Context context) {
+		if (uniqueInstance == null){
+			synchronized (AudioPlayerList.class) {
+				if (uniqueInstance == null) {
+					uniqueInstance = new AudioPlayerList(context);
+				}
+			}
+		}
+		return uniqueInstance;
 	}
 	
 	/**
@@ -76,15 +105,20 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	 */
 	public void play() throws RuntimeException {
 		if(current >= 0 && current < audioList.size()) {
-			Audio audio = audioList.get(current);
-			try {
-				player.setDataSource(context, Uri.parse(audio.getURI().toString()));
-				player.prepare();
-				player.start();
-			}
-			catch(Exception e) {
-				Log.v(AudioPlayerList.class.getCanonicalName(), e.getMessage());
-				throw new RuntimeException(e);
+			if (isPlaying == true) {
+				return; 
+			}else {				
+				Audio audio = audioList.get(current);
+				try {
+					player.setDataSource(context, Uri.parse(audio.getURI().toString()));
+					player.prepare();
+					player.start();
+					isPlaying = true;
+				}
+				catch(Exception e) {
+					Log.v(AudioPlayerList.class.getCanonicalName(), e.getMessage());
+					throw new RuntimeException(e);
+				}
 			}
 		} 
 	}
@@ -142,10 +176,30 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	public boolean isShuffle() {
 		return shuffle;
 	}
-
+	
+	public boolean isPlaying () {
+		return isPlaying;
+	}
 
 	public void setShuffle(boolean Shuffle) {
 		this.shuffle = Shuffle;
+	}
+
+	public void stop() {
+		player.stop();
+		player.reset();
+		isPlaying = false;
+	}
+
+	public void killPLaylist() {
+		audioList.removeAll(audioList);
+	}
+
+	public void newPlaylist(Audio[] executionList) {
+		for(Audio audio : executionList)  {
+			audioList.add(audio);
+		}
+		current = 0;
 	}
 	
 }
