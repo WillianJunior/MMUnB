@@ -73,7 +73,7 @@ public class Manager {
 
 		MediaExtractor extractor = new DefaultAudioExtractor(context);
 
-		List<Author> authors = extractor.processFiles(allMusics);
+		List<Author> authors = (List<Author>) extractor.processFiles(allMusics);
 
 		for(Author author: authors) {
 			AuthorDAO dao = DBFactory.factory(context).createAuthorDAO();
