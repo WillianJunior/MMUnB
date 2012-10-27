@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 import br.unb.mobileMedia.core.domain.Audio;
-import br.unb.mobileMedia.core.domain.Author;
 import br.unb.mobileMedia.core.domain.Playlist;
 
 /**

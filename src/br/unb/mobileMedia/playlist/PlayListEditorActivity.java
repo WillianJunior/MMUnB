@@ -6,11 +6,10 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,7 +20,6 @@ import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.domain.Playlist;
 import br.unb.mobileMedia.core.manager.Manager;
-import br.unb.mobileMedia.core.view.AudioPlayerActivity;
 
 public class PlayListEditorActivity extends Activity {
 

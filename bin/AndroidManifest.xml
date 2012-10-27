@@ -46,20 +46,14 @@
         <activity
             android:name=".playlist.PlayListEditorActivity"
             android:label="@string/title_activity_playlist_editor" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".playlist.MusicSelectActivity"
             android:label="@string/title_activity_music_select" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        </activity>
+        <activity
+            android:name=".core.view.AudioSelectActivity"
+            android:label="@string/title_activity_music_select" >
         </activity>
     </application>
 

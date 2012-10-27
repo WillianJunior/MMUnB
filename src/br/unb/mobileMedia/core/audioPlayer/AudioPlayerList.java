@@ -14,9 +14,9 @@ import br.unb.mobileMedia.core.domain.Audio;
 import br.unb.mobileMedia.core.manager.Manager;
 
 public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
-	
+
 	private static volatile AudioPlayerList uniqueInstance;
-	
+
 	private Context context;
 	private MediaPlayer player;
 	private List<Audio> audioList;
@@ -24,9 +24,10 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	private boolean repeat = false;
 	private boolean shuffle = false;
 	private boolean isPlaying = false;
-	
+	private boolean isPaused = false;
+
 	private AudioPlayerList () {}
-	
+
 	/**
 	 * Default constructor expecting just the application context.
 	 * @param context the application context.
@@ -36,12 +37,12 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		player = new MediaPlayer();
 		current = 0;
 		audioList = new ArrayList<Audio>();
-		
+
 		setRepeat(false);
-		
+
 		player.setOnCompletionListener(this);
 	}
-	
+
 	/**
 	 * A constructor that expects both application context and an array of audio.
 	 * @param context the application context.
@@ -49,15 +50,15 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	 */
 	private AudioPlayerList(Context context, Audio[] audioArray) {
 		this(context);
-		
+
 		if (audioArray == null)
 			audioList = new ArrayList<Audio>();
-		
+
 		for(Audio audio : audioArray)  {
 			audioList.add(audio);
 		}
 	}
-	
+
 	public static AudioPlayerList getInstance (Context context, Audio[] audioArray) {
 		if (uniqueInstance == null){
 			synchronized (AudioPlayerList.class) {
@@ -68,7 +69,7 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		}
 		return uniqueInstance;
 	}
-	
+
 	public static AudioPlayerList getInstance (Context context) {
 		if (uniqueInstance == null){
 			synchronized (AudioPlayerList.class) {
@@ -79,7 +80,7 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		}
 		return uniqueInstance;
 	}
-	
+
 	/**
 	 * Return the number of elements of the list.
 	 * @return the number of elements of the list.
@@ -87,7 +88,7 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	public int size() {
 		return audioList.size();
 	}
-	
+
 	/**
 	 * Returns an iterator on the elements of the list. 
 	 * @return an iterator on the elements of the list.
@@ -95,18 +96,23 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	public Iterator<Audio> iterator() {
 		return audioList.iterator();
 	}
-	
+
 	public int current() {
 		return current;
 	}
-	
+
 	/**
 	 * Play the current audio on the audio play list.
 	 */
 	public void play() throws RuntimeException {
 		if(current >= 0 && current < audioList.size()) {
-			if (isPlaying == true) {
+			if (isPlaying) {
 				return; 
+			} else if (isPaused) {
+				player.start();
+				isPaused = false;
+				isPlaying = true;
+				return;
 			}else {				
 				Audio audio = audioList.get(current);
 				try {
@@ -133,7 +139,7 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		catch(DBException e) {
 			throw new RuntimeException(e);
 		}
-		
+
 		mp.reset();
 		//if Shuffle off:
 		if(!shuffle){
@@ -154,11 +160,11 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		}
 		//if Shuffle on:
 		else{
-			
+
 			Random rand = new Random();
-            current = rand.nextInt(audioList.size());
-            play();
-			
+			current = rand.nextInt(audioList.size());
+			play();
+
 		}
 	}
 
@@ -171,12 +177,12 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	public void setRepeat(boolean repeat) {
 		this.repeat = repeat;
 	}
-	
+
 
 	public boolean isShuffle() {
 		return shuffle;
 	}
-	
+
 	public boolean isPlaying () {
 		return isPlaying;
 	}
@@ -186,9 +192,12 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 	}
 
 	public void stop() {
-		player.stop();
-		player.reset();
-		isPlaying = false;
+		if (isPlaying) {
+			player.stop();
+			player.reset();
+			isPlaying = false;
+			isPaused = false;
+		}
 	}
 
 	public void killPLaylist() {
@@ -201,5 +210,42 @@ public class AudioPlayerList implements MediaPlayer.OnCompletionListener {
 		}
 		current = 0;
 	}
+
+	public void pause() {
+		player.pause();
+		isPlaying = false;
+		isPaused = true;
+	}
+
+	public void nextTrack() {
+		if (current >= (audioList.size()-1)) {
+			stop();
+			current = 0;
+		} else {
+			current++;
+			stop();
+			play();
+		}
+	}
+
+	public void previousTrack() {
+		if (player.getCurrentPosition() >= 3000) {
+			stop();
+			play();
+		} else {
+			if (current > 0) {
+				stop();
+				current--;
+				play();
+			} else {
+				stop();
+				play();
+			}
+		}
+	}
 	
+	public void addMusic (Audio newMusic) {
+		audioList.add(newMusic);
+	}
+
 }

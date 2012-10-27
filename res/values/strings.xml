@@ -23,5 +23,8 @@
     <string name="title_activity_playlist_editor">PlaylistEditorActivity</string>
     <string name="title_activity_music_select">MusicSelectActivity</string>
     <string name="btn_PlayPlaylist">Tocar Playlist</string>
+    <string name="ff">FF</string>
+    <string name="re">RE</string>
+    <string name="add_a_music">Add a music</string>
 
 </resources>
