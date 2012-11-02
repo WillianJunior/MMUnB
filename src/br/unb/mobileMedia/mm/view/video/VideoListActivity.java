@@ -38,7 +38,9 @@ public class VideoListActivity extends ListActivity {
 
 	private void configureUI() {
 		fileList = FileUtility.listFiles(new File(Environment.getExternalStorageDirectory().getPath() + "/DCIM/Camera/"), ".mp4");
-		((VideoFileArrayAdapter)getListAdapter()).addAll(fileList);
+		while (fileList.iterator().hasNext()) {
+			((VideoFileArrayAdapter)getListAdapter()).add(fileList.iterator().next());
+		}
 		((VideoFileArrayAdapter)getListAdapter()).notifyDataSetChanged();
 		
 		ListView lv = getListView();

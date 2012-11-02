@@ -49,16 +49,11 @@
         <ListView
             android:id="@+id/list_audio_player"
             android:layout_width="320dp"
-            android:layout_height="347dp" 
-            android:choiceMode="singleChoice" 
-            android:listSelector="@android:color/background_light">
-        </ListView>
-
-        <ImageButton
-            android:id="@+id/img_btn_home"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_home" />
+            android:choiceMode="singleChoice"
+            android:listSelector="@android:color/background_light" >
+
+        </ListView>
     </LinearLayout>
 
 </RelativeLayout>

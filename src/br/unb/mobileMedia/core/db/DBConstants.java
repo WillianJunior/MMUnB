@@ -2,7 +2,7 @@ package br.unb.mobileMedia.core.db;
 
 public interface DBConstants {
 	public String DATABASE_NAME = "MMUnBDB";
-	public int DATABASE_VERSION = 22;
+	public int DATABASE_VERSION = 23;
 
 	public String DROP_TABLE_STATEMENTS[] = { "DROP TABLE IF EXISTS AUTHOR",
 			"DROP TABLE IF EXISTS AUDIO", "DROP TABLE IF EXISTS EXECUTION_HISTORY", "DROP TABLE IF EXISTS TB_PLAYLIST",
