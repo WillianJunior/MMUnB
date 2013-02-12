@@ -26,5 +26,11 @@
     <string name="ff">FF</string>
     <string name="re">RE</string>
     <string name="add_a_music">Add a music</string>
+    
+    <string name="btn_top_artists">Top Artists</string>
+    <string name="btn_top_songs">Top Songs</string>
+    <string name="btn_share_app">Share App</string>
+    <string name="title_activity_share_list">Share</string>
+    
 
 </resources>
