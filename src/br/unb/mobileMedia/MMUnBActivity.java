@@ -11,8 +11,8 @@ import br.unb.mobileMedia.core.db.DBException;
 import br.unb.mobileMedia.core.manager.Manager;
 import br.unb.mobileMedia.core.view.AuthorListActivity;
 import br.unb.mobileMedia.core.view.ShareListActivity;
-import br.unb.mobileMedia.mm.view.video.VideoListActivity;
 import br.unb.mobileMedia.playlist.MainPlaylistListActivity;
+import br.unb.mobileMedia.videoplayer.view.video.VideoListActivity;
 
 /**
  * The main activity of the MMUnB project.
@@ -42,12 +42,12 @@ public class MMUnBActivity extends Activity {
 			}
 		});
     	
-    	((Button)findViewById(R.id.btn_media_list)).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				Intent startActivtyIntent = new Intent(getApplicationContext(), VideoListActivity.class);
-				startActivity(startActivtyIntent);
-			}
-		});
+//    	((Button)findViewById(R.id.btn_media_list)).setOnClickListener(new OnClickListener() {
+//			public void onClick(View v) {
+//				Intent startActivtyIntent = new Intent(getApplicationContext(), VideoListActivity.class);
+//				startActivity(startActivtyIntent);
+//			}
+//		});
     	
     	((Button)findViewById(R.id.btn_play_list)).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -68,6 +68,15 @@ public class MMUnBActivity extends Activity {
 			}
 		});
     	
+    	/**
+    	 * 
+    	 * 
+    	 * 
+    	 * VELOCITY - SOCIAL NETWORK
+    	 * INICIO
+    	 * 
+    	 */
+    	
     	//social network button
     	((Button)findViewById(R.id.btn_share)).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -75,6 +84,15 @@ public class MMUnBActivity extends Activity {
 				startActivity(startActivtyIntent);
 			}
 		});
+    	
+    	/**
+    	 * 
+    	 * 
+    	 * 
+    	 * VELOCITY - SOCIAL NETWORK
+    	 * FIM
+    	 * 
+    	 */
     	
     	((Button)findViewById(R.id.btn_exit)).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
